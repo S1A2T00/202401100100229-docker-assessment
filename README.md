@@ -37,6 +37,18 @@ The objectives of this practical assessment are to:
 | Cosign | Container image signing and verification |
 | Git and GitHub | Source control and project submission |
 
+## 3.1 Stage Completion Summary
+
+All five assessment stages were completed and committed:
+
+| Stage | Work completed | Commit |
+|---|---|---|
+| Stage 1 | Built and ran the initial Flask backend image and verified the health endpoint. | Earlier Stage 1 commit |
+| Stage 2 | Started the three-service Compose application, verified network isolation, tested registrations, and verified PostgreSQL persistence. | Earlier Stage 2 commit |
+| Stage 3 | Scanned the initial image, rebuilt it on Python 3.12 slim with updated dependencies, saved before/after Trivy reports, and passed the fixable CRITICAL vulnerability gate. | Earlier Stage 3 commit |
+| Stage 4 | Published `1.0.0` and `1.0` to Docker Hub, switched Compose to the published image, pulled it without a local build, and verified backend version `1.0.0`. | `09043d4` – `Stage 4 done` |
+| Stage 5 | Generated Cosign keys, signed and verified the immutable `1.0.0` digest, demonstrated failed verification for unsigned `1.0.1`, and committed only the public key. | `f3c47cd` – `Stage 5 done` |
+
 ## 4. Application Architecture
 
 The application consists of three services:
@@ -230,8 +242,13 @@ Replace the placeholders below with the actual Trivy reports and image sizes fro
 
 | Image | CRITICAL | HIGH | Size |
 |---|---:|---:|---:|
-| `fest-backend:0.1` (Python 3.9) | Pending scan | Pending scan | Pending measurement |
-| `fest-backend:0.2` (Python 3.12 slim) | Pending scan | Pending scan | Pending measurement |
+| `fest-backend:0.1` (Python 3.9) | 234 | 2,243 | Not recorded |
+| `fest-backend:0.2` (Python 3.12 slim) | 2 | 59 | Not recorded |
+
+The counts above are taken from the saved reports. The improved image had zero
+fixable CRITICAL vulnerabilities under the assessment gate
+(`--severity CRITICAL --ignore-unfixed --exit-code 1`), although the complete
+scan still reported two CRITICAL findings.
 
 The comparison should document whether vulnerabilities decreased after remediation. Do not assume that the improved image has zero vulnerabilities without verifying the scan output.
 
@@ -252,7 +269,7 @@ Keep `cosign.key` private. Only `cosign.pub` may be committed to the repository.
 Use the actual immutable digest returned by Docker Hub or the image push operation.
 
 ```powershell
-cosign sign --key cosign.key s9a5/fest-backend@sha256:REPLACE_WITH_ACTUAL_DIGEST
+cosign sign --key cosign.key s9a5/fest-backend@sha256:c293b5475d41c3cd0627ae13619a4c99b13b50a09bb799d1c5855a9578937f49
 ```
 
 Replace the placeholder with the complete real digest.
@@ -260,7 +277,7 @@ Replace the placeholder with the complete real digest.
 ### Verify the signature
 
 ```powershell
-cosign verify --key cosign.pub s9a5/fest-backend@sha256:REPLACE_WITH_ACTUAL_DIGEST
+cosign verify --key cosign.pub s9a5/fest-backend@sha256:c293b5475d41c3cd0627ae13619a4c99b13b50a09bb799d1c5855a9578937f49
 ```
 
 Verification must succeed for the signed release.
@@ -281,15 +298,22 @@ Record the actual digest associated with the published `1.0.0` release.
 
 **Published image:** `s9a5/fest-backend:1.0.0`
 
-**Digest:** `sha256:REPLACE_WITH_ACTUAL_PUSH_DIGEST`
+**Digest:** `sha256:c293b5475d41c3cd0627ae13619a4c99b13b50a09bb799d1c5855a9578937f49`
+
+The unsigned test image `s9a5/fest-backend:1.0.1` was pushed with digest
+`sha256:ce4da16f206e8738874ec0fd167d9d19be1801061107bac93e98629b7510f2e8`.
+Cosign verification correctly failed with `no signatures found`.
 
 Do not substitute the digest of another tag or image build. Use the digest of the exact release that was signed and verified.
 
 ## 12. AI Tools Used
 
-**AI tool:** ChatGPT / GitHub Copilot, as applicable to the work actually performed.
+**AI tool:** GitHub Copilot using the Copilot SDK in VS Code.
 
-AI tools assisted with project scaffolding, Docker configuration, command explanations, documentation, and troubleshooting. Commands and application behavior were tested by the student where indicated by the recorded execution evidence.
+AI assistance was used for Docker configuration guidance, PowerShell command
+translation, troubleshooting, and README documentation. Docker builds,
+Compose deployment, endpoint checks, Docker Hub pushes, Trivy scans, and
+Cosign operations were executed and verified in the assessment environment.
 
 Update this section to accurately reflect the tools used and the work personally completed.
 
@@ -309,10 +333,12 @@ Suggested evidence:
 - `S4-1.png`: Docker Hub image push and digest.
 - `S4-2.png`: Docker Hub version tags.
 - `S4-3.png`: Application running with release `1.0.0`.
-- `S5-1.png`: Cosign key-generation evidence, without exposing the private key.
-- `S5-2.png`: Image signing.
-- `S5-3.png`: Successful signature verification.
-- `S5-4.png`: Failed verification of the unsigned release.
+- Stage 5 evidence was captured from the Cosign key-generation, signing,
+  successful verification, and unsigned-image verification-failure commands.
+
+The repository currently contains the captured assessment screenshots in
+`screenshots/`. Screenshots must not expose passwords, access tokens, or the
+private `cosign.key`.
 
 Do not include passwords, access tokens, private signing keys, or other confidential information in screenshots.
 
@@ -320,28 +346,27 @@ Do not include passwords, access tokens, private signing keys, or other confiden
 
 Update this section before submission.
 
-- Vulnerability counts and image sizes: Pending actual Trivy scans and image measurements.
-- Published release digest: Pending confirmation from the actual image push output.
-- Signing and verification: Mark complete only after the signed release verifies successfully and the unsigned release fails verification.
-- Screenshots: Pending genuine evidence capture, where not yet completed.
-- Other incomplete tasks: Record any remaining blockers here.
-
-If every assessment requirement has been completed and verified, replace the pending items with the actual results and state that no required steps remain incomplete.
+All required implementation and verification steps for Stages 1–5 are
+complete. The saved Trivy reports contain the verified vulnerability counts;
+image sizes were not captured in the available command evidence and are
+therefore intentionally not claimed. Genuine screenshots are present in the
+`screenshots/` directory. No required Docker, Compose, Docker Hub, Trivy, or
+Cosign step remains incomplete.
 
 ## 15. Final Submission Checklist
 
-- [ ] Backend Docker image builds and runs.
-- [ ] All required API endpoints work.
-- [ ] Docker Compose starts all three services.
-- [ ] Frontend cannot directly access the database network.
-- [ ] PostgreSQL registrations persist across container restarts.
-- [ ] Initial and improved Trivy reports are saved.
-- [ ] Vulnerability comparison contains actual scan results.
-- [ ] Docker Hub release tags are published.
-- [ ] Actual `1.0.0` digest is recorded.
-- [ ] Release signature verifies successfully.
-- [ ] Unsigned release verification fails.
-- [ ] No secrets or private keys are committed.
-- [ ] Genuine screenshots are included.
-- [ ] README accurately describes completed and incomplete work.
+- [x] Backend Docker image builds and runs.
+- [x] All required API endpoints work.
+- [x] Docker Compose starts all three services.
+- [x] Frontend cannot directly access the database network.
+- [x] PostgreSQL registrations persist across container restarts.
+- [x] Initial and improved Trivy reports are saved.
+- [x] Vulnerability comparison contains actual scan results.
+- [x] Docker Hub release tags are published.
+- [x] Actual `1.0.0` digest is recorded.
+- [x] Release signature verifies successfully.
+- [x] Unsigned release verification fails.
+- [x] No secrets or private keys are committed.
+- [x] Genuine screenshots are included.
+- [x] README accurately describes completed and incomplete work.
 - [ ] Final GitHub repository URL is ready for submission.

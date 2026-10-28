@@ -342,6 +342,7 @@ The repository contains the captured assessment screenshots in
 - [`Screenshot 2026-10-28 121125.png`](./screenshots/Screenshot%202026-10-28%20121125.png)
 - [`Screenshot 2026-10-28 122106.png`](./screenshots/Screenshot%202026-10-28%20122106.png)
 - [`Screenshot 2026-10-28 122253.png`](./screenshots/Screenshot%202026-10-28%20122253.png)
+- [`Screenshot 2026-10-28 124337.png`](./screenshots/Screenshot%202026-10-28%20124337.png)
 
 Screenshots must not expose passwords, access tokens, or the private
 `cosign.key`.

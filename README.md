@@ -43,9 +43,9 @@ All five assessment stages were completed and committed:
 
 | Stage | Work completed | Commit |
 |---|---|---|
-| Stage 1 | Built and ran the initial Flask backend image and verified the health endpoint. | Earlier Stage 1 commit |
-| Stage 2 | Started the three-service Compose application, verified network isolation, tested registrations, and verified PostgreSQL persistence. | Earlier Stage 2 commit |
-| Stage 3 | Scanned the initial image, rebuilt it on Python 3.12 slim with updated dependencies, saved before/after Trivy reports, and passed the fixable CRITICAL vulnerability gate. | Earlier Stage 3 commit |
+| Stage 1 | Built and ran the initial Flask backend image and verified the health endpoint. | Completed |
+| Stage 2 | Started the three-service Compose application, verified network isolation, tested registrations, and verified PostgreSQL persistence. | Completed |
+| Stage 3 | Scanned the initial image, rebuilt it on Python 3.12 slim with updated dependencies, saved before/after Trivy reports, and passed the fixable CRITICAL vulnerability gate. | Completed |
 | Stage 4 | Published `1.0.0` and `1.0` to Docker Hub, switched Compose to the published image, pulled it without a local build, and verified backend version `1.0.0`. | `09043d4` – `Stage 4 done` |
 | Stage 5 | Generated Cosign keys, signed and verified the immutable `1.0.0` digest, demonstrated failed verification for unsigned `1.0.1`, and committed only the public key. | `f3c47cd` – `Stage 5 done` |
 
@@ -238,8 +238,6 @@ The gate fails when fixable CRITICAL vulnerabilities matching the selected scan 
 
 ### Before-and-after comparison
 
-Replace the placeholders below with the actual Trivy reports and image sizes from the assessment environment.
-
 | Image | CRITICAL | HIGH | Size |
 |---|---:|---:|---:|
 | `fest-backend:0.1` (Python 3.9) | 234 | 2,243 | Not recorded |
@@ -250,7 +248,9 @@ fixable CRITICAL vulnerabilities under the assessment gate
 (`--severity CRITICAL --ignore-unfixed --exit-code 1`), although the complete
 scan still reported two CRITICAL findings.
 
-The comparison should document whether vulnerabilities decreased after remediation. Do not assume that the improved image has zero vulnerabilities without verifying the scan output.
+The comparison confirms that the improved image substantially reduced the
+vulnerability count. Image sizes were not captured during the assessment and
+are intentionally marked as not recorded rather than estimated.
 
 ## 10. Cosign Image Signing and Verification
 
@@ -271,8 +271,6 @@ Use the actual immutable digest returned by Docker Hub or the image push operati
 ```powershell
 cosign sign --key cosign.key s9a5/fest-backend@sha256:c293b5475d41c3cd0627ae13619a4c99b13b50a09bb799d1c5855a9578937f49
 ```
-
-Replace the placeholder with the complete real digest.
 
 ### Verify the signature
 
@@ -315,8 +313,6 @@ translation, troubleshooting, and README documentation. Docker builds,
 Compose deployment, endpoint checks, Docker Hub pushes, Trivy scans, and
 Cosign operations were executed and verified in the assessment environment.
 
-Update this section to accurately reflect the tools used and the work personally completed.
-
 ## 13. Assessment Evidence
 
 Save genuine screenshots of the actual terminal, browser, Docker Hub, Trivy, and Cosign outputs in the `screenshots/` directory.
@@ -350,11 +346,7 @@ The repository contains the captured assessment screenshots in
 Screenshots must not expose passwords, access tokens, or the private
 `cosign.key`.
 
-Do not include passwords, access tokens, private signing keys, or other confidential information in screenshots.
-
 ## 14. Steps Not Completed
-
-Update this section before submission.
 
 All required implementation and verification steps for Stages 1–5 are
 complete. The saved Trivy reports contain the verified vulnerability counts;
@@ -379,4 +371,5 @@ Cosign step remains incomplete.
 - [x] No secrets or private keys are committed.
 - [x] Genuine screenshots are included.
 - [x] README accurately describes completed and incomplete work.
-- [ ] Final GitHub repository URL is ready for submission.
+- [x] Final GitHub repository URL is ready for submission:
+  [https://github.com/S1A2T00/202401100100229-docker-assessment](https://github.com/S1A2T00/202401100100229-docker-assessment)

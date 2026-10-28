@@ -336,9 +336,19 @@ Suggested evidence:
 - Stage 5 evidence was captured from the Cosign key-generation, signing,
   successful verification, and unsigned-image verification-failure commands.
 
-The repository currently contains the captured assessment screenshots in
-`screenshots/`. Screenshots must not expose passwords, access tokens, or the
-private `cosign.key`.
+The repository contains the captured assessment screenshots in
+[`screenshots/`](./screenshots/). The available evidence files are:
+
+- [`Screenshot 2026-10-28 115050.png`](./screenshots/Screenshot%202026-10-28%20115050.png)
+- [`Screenshot 2026-10-28 115557.png`](./screenshots/Screenshot%202026-10-28%20115557.png)
+- [`Screenshot 2026-10-28 115608.png`](./screenshots/Screenshot%202026-10-28%20115608.png)
+- [`Screenshot 2026-10-28 121008.png`](./screenshots/Screenshot%202026-10-28%20121008.png)
+- [`Screenshot 2026-10-28 121125.png`](./screenshots/Screenshot%202026-10-28%20121125.png)
+- [`Screenshot 2026-10-28 122106.png`](./screenshots/Screenshot%202026-10-28%20122106.png)
+- [`Screenshot 2026-10-28 122253.png`](./screenshots/Screenshot%202026-10-28%20122253.png)
+
+Screenshots must not expose passwords, access tokens, or the private
+`cosign.key`.
 
 Do not include passwords, access tokens, private signing keys, or other confidential information in screenshots.
 
